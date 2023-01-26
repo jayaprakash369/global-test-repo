@@ -1,0 +1,12 @@
+image: atlassian/pipelines-awscli:1.0.0
+
+pipelines:
+  default:
+    - step:
+        name: Deploy to server
+        script:
+          - pipe: atlassian/ssh-run:0.4.1
+            variables:
+              SSH_USER: $SERVER_USER
+              SSH_HOST: $SERVER_IP
+              SSH_COMMAND: 'cd $DEPLOY_DIR && git pull'
