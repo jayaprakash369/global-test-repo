@@ -1,4 +1,4 @@
-image: atlassian/pipelines-awscli:1.0.0
+image: ubuntu-latest
 
 pipelines:
   default:
