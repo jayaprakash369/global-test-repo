@@ -203,7 +203,8 @@
   *For WSL only:*
 
   ```bash
-  export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"  export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/Users/<you>/ID-Pal/dev-box/"
+  export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+  export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/Users/<you>/ID-Pal/dev-box/"
   ```
 
   *For all platforms:*
