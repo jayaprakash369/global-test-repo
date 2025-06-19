@@ -49,6 +49,10 @@
   ```
   wsl --set-version Ubuntu-22.04 1
   ```
+* Now list the available Ubuntu version
+  ```
+  wsl --list --verbose
+  ```
 
   Output Example:
 
@@ -88,7 +92,7 @@
 
 * After installing, It will ask for a username and password. Enter your desired username and password, then press Enter. This will create a user and log you into the terminal as the created user. (Do not switch to the root user or create another user to avoid confusion and complexity until the setup is complete.)
 
-* Open VirtualBox in parallel. If it shows any permission error while opening, run it in administrator mode.
+* Open VirtualBox in parallel. If it shows any permission error while opening, open it in administrator mode.
 
 * Download and install VirtualBox 7.1.4 using the links below:
 
@@ -102,7 +106,7 @@
   wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
   echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
   sudo apt update 
-  sudo apt install vagrant=2.4.7-1
+  sudo apt install vagrant=2.4.7-1 -y
   vagrant --version
   vagrant plugin install vagrant-scp
   vagrant plugin install vagrant-disksize
@@ -131,7 +135,7 @@
 * Run the following commands in your Ubuntu terminal:
 
   ```bash
-  sudo apt-get install make keychain unzip
+  sudo apt-get install make keychain unzip -y
   ```
 
 **Install AWS CLI**
@@ -180,7 +184,11 @@
 * It will ask for a passphrase. Enter it for security.
 
 * By default, the key will be saved at `/home/<user>/.ssh/id_ed25519`. Leave it as is and press Enter.
-
+* It will generate the private and public keys and save it in the above default path.
+* You can check the keys in ```~/.ssh/``` folder
+    ```
+    ls -al ~/.ssh
+    ```
 * For the detailed instructions, refer to:
 
   ```
@@ -220,7 +228,7 @@
   complete -W "`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'`" make
   ```
 
-* After updating, run the following to apply changes:
+* After updating, run the following to apply the variable changes:
 
   ```bash
   source ~/.bashrc
@@ -277,7 +285,7 @@
   * Creates a VM in VirtualBox
   * Installs packages and dependencies to run the application and Docker containers
   * Clones the necessary ID-Pal private repositories
-  * Pulls the PHP 8 and MySQL images and creates containers from them
+  * Pulls the PHP 8 and MySQL docker images and creates local containers
 
 * Check the build logs thoroughly for any errors. The build may fail due to network issues or manual interruption.
 
@@ -307,7 +315,7 @@
      make logs SERVICE=php8
      ```
 
-2. The local site `tusa.client.id-pal.com` should be accessible in your browser.
+2. The local site `https://tusa.client.id-pal.com` should be accessible in your browser.
 
 **Troubleshooting Dev-Box build issues**
 
