@@ -1,392 +1,427 @@
-**Steps for configuring new local dev-box environment**
+
+**Steps for configuring a new local dev-box environment**
 
 **System Requirements**
 
 1. Operating System - Windows 11 22H2 | macOS
-2. VirtualBox 7.1.4 (It should be a fresh installation. If it already exists, uninstall completely and install freshly)
+2. VirtualBox 7.1.4 (It should be a fresh installation. If it already exists, uninstall it completely and install a fresh copy.)
 3. Vagrant 2.4.5+
 4. AWS CLI (latest version)
-5. GitHub Personal Access Token(PAT - fine grained token)
-    
-    
-**Create the github PAT token**
+5. GitHub Personal Access Token (PAT - fine-grained token)
 
-To create a new PAT token, follow the steps provided here
+**Create the GitHub PAT token**
 
-```bash
-[https://id-pal.monday.com/boards/1735082033/pulses/5797018445](https://id-pal.monday.com/boards/1735082033/pulses/5797018445)
-```
+* To create a new PAT token, follow the steps provided here:
+
+  ```bash
+  https://id-pal.monday.com/boards/1735082033/pulses/5797018445
+  ```
 
 **Install WSL and Ubuntu**
 
-- Follow the instructions to install the Windows Subsystem and update to WSL2.
+* Follow the instructions to install the Windows Subsystem and update to WSL2.
 
-    ```
-    https://learn.microsoft.com/en-us/windows/wsl/install
-    ```
+  ```
+  https://learn.microsoft.com/en-us/windows/wsl/install
+  ```
 
-- Once the WSL is installed, it will automatically install Ubuntu under the WSL. But we need to install minimum Ubuntu 22.04 or other latest LTS Ubuntu versions(24.04 LTS) from the Microsoft Store
-- To install Ubuntu open the Microsoft Store and type ubuntu in the search bar. It will list out available Ubuntu versions.
-- Click on ‘get’ and it will start installing Ubuntu on the local machine
-- Once the Ubuntu Linux terminal is installed, open PowerShell in administration mode and run the following command to see that the Linux distribution is properly installed. Take note of the 'Name' and 'Version' of the distribution.
+* Once WSL is installed, it will automatically install Ubuntu under WSL. However, we need to install a minimum of Ubuntu 22.04 version or another latest LTS Ubuntu version (e.g., 24.04 LTS) from the Microsoft Store.
 
-    ```
-    wsl --list --verbose
-    ```
+* To install Ubuntu, open the Microsoft Store and type "Ubuntu" in the search bar. It will list the available Ubuntu versions.
 
-    Output Example:
+* Click on ‘Get’ and it will start installing Ubuntu on your local machine.
 
-    | **NAME** | **STATE** | **VERSION** |
-    | --- | --- | --- |
-    | Ubuntu | Running | 2 |
-    | Ubuntu -22.04 | Running | 2 |
-- Run the following command to set your distribution to run as WSL1. WSL must be updated to WSL2, but the distribution should be set to WSL1.
+* Once the Ubuntu Linux terminal is installed, open PowerShell in administrator mode and run the following command to verify that the Linux distribution is properly installed. Take note of the 'Name' and 'Version' of the distribution.
 
-    ```
-    wsl --set-version Ubuntu-22.04 1
-    ```
+  ```
+  wsl --list --verbose
+  ```
 
-    Output Example:
+  Output Example:
 
-    | **NAME** | **STATE** | **VERSION** |
-    | --- | --- | --- |
-    | Ubuntu -22.04 | Running | 1 |
+  | **NAME**     | **STATE** | **VERSION** |
+  | ------------ | --------- | ----------- |
+  | Ubuntu       | Running   | 2           |
+  | Ubuntu-22.04 | Running   | 2           |
+
+* Run the following command to set your distribution to run as WSL1. WSL must be updated to WSL2, but the distribution should be set to WSL1.
+
+  ```
+  wsl --set-version Ubuntu-22.04 1
+  ```
+
+  Output Example:
+
+  | **NAME**     | **STATE** | **VERSION** |
+  | ------------ | --------- | ----------- |
+  | Ubuntu-22.04 | Running   | 1           |
 
 **Disabling Hyper-V**
 
-- Hyper-V is a Windows-built-in hypervisor. Hyper-V must be disabled to allow VirtualBox to perform as expected.
-- Instructions on how to disable Hyper-V:
+* Hyper-V is a built-in Windows hypervisor. It must be disabled to allow VirtualBox to function as expected.
 
-    ```
-    https://docs.microsoft.com/en-us/troubleshoot/windows-client/application-management/virtualization-apps-not-work-with-hyper-v
-    ```
+* Instructions to disable Hyper-V:
 
-- Additional command to disable Hyper-V
+  ```
+  https://docs.microsoft.com/en-us/troubleshoot/windows-client/application-management/virtualization-apps-not-work-with-hyper-v
+  ```
 
-    ```
-    bcdedit /set hypervisorlaunchtype off
-    ```
+* Additional command to disable Hyper-V:
+
+  ```
+  bcdedit /set hypervisorlaunchtype off
+  ```
 
 **Troubleshooting**
 
-- WSL Register Distribution Error 0x80370102 issue in Windows 10 / 11 in case of reinstallation of the WSL
+* WSL Register Distribution Error 0x80370102 in Windows 10/11 (in case of WSL reinstallation):
 
-    ```
-    bcdedit /set hypervisorlaunchtype auto
-    ```
+  ```
+  bcdedit /set hypervisorlaunchtype auto
+  ```
 
 **Software Installation in WSL Ubuntu**
 
-- Search as ubuntu in the window search bar. It will show the installed ubuntu versions
-- Open the Ubuntu terminal. Sometimes it might take some minutes to install. So wait until it install completely.
-- After that, it will ask for a username and password. Enter your username and the password and press enter. It will create the user and enter into the terminal as created user(Don’t Switch to root user or create another user hereafter to avoid the confusion and complexity until the setup complete).
-- Open the VirtualBox parallelly. If it shows any permission error while opening, open it as administrator mode
-- Download and install VirtualBox 7.1.4 using the links below:
+* Search for "Ubuntu" in the Windows search bar. It will show the installed Ubuntu versions.
 
-    Reference Link: [https://download.virtualbox.org/virtualbox/7.1.4/](https://download.virtualbox.org/virtualbox/7.1.4/)
+* Open the Ubuntu terminal. Sometimes it might take a few minutes to complete the installation, so wait patiently.
 
-    Direct Download link: [https://download.virtualbox.org/virtualbox/7.1.4/VirtualBox-7.1.4-165100-Win.exe](https://download.virtualbox.org/virtualbox/7.1.4/VirtualBox-7.1.4-165100-Win.exe)
+* After installing, It will ask for a username and password. Enter your desired username and password, then press Enter. This will create a user and log you into the terminal as the created user. (Do not switch to the root user or create another user to avoid confusion and complexity until the setup is complete.)
 
-- Download the Debian package of Vagrant’s latest version by running the following commands in the Ubuntu terminal
+* Open VirtualBox in parallel. If it shows any permission error while opening, run it in administrator mode.
 
-    ```
-    wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-    sudo apt update && sudo apt install vagrant
-    vagrant --version
-    vagrant plugin install vagrant-scp
-    vagrant plugin install vagrant-disksize
-    ```
+* Download and install VirtualBox 7.1.4 using the links below:
 
-- Update the hosts file for on your host machine so that the web-browser DNS requests will resolve to the local VM
-- For Windows: Open the C drive and open the host file from /Windows/System32/drivers/etc/hosts path
-- For macos: Open the default terminal and open the file **nano /etc/hosts.** (ref:[https://kinsta.com/knowledgebase/edit-mac-hosts-file/](https://kinsta.com/knowledgebase/edit-mac-hosts-file/))
+  Reference Link: [https://download.virtualbox.org/virtualbox/7.1.4/](https://download.virtualbox.org/virtualbox/7.1.4/)
+ 
+  Direct Download: [https://download.virtualbox.org/virtualbox/7.1.4/VirtualBox-7.1.4-165100-Win.exe](https://download.virtualbox.org/virtualbox/7.1.4/VirtualBox-7.1.4-165100-Win.exe)
 
-    ```
-    192.168.56.15 mise.client.id-pal.com websubmission.mise.client.id-pal.com websubmission.tusa.client.id-pal.com tusa.client.id-pal.com
-    ```
+* Download the Vagrant's latest version by running the following commands in the Ubuntu terminal:
+
+  ```bash
+  wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+  echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+  sudo apt update 
+  sudo apt install vagrant=2.4.7-1
+  vagrant --version
+  vagrant plugin install vagrant-scp
+  vagrant plugin install vagrant-disksize
+  ```
+
+* Update the hosts file on your host machine so that browser DNS requests resolve to the local VM.
+
+* For Windows: Open the C drive and navigate to `/Windows/System32/drivers/etc/hosts`
+
+* For macOS: Open the default terminal and open the file using:
+
+  ```bash
+  nano /etc/hosts
+  ```
+
+  Reference: [https://kinsta.com/knowledgebase/edit-mac-hosts-file/](https://kinsta.com/knowledgebase/edit-mac-hosts-file/)
+
+* After opening the file add the below content and save it
+
+  ```
+  192.168.56.15 mise.client.id-pal.com websubmission.mise.client.id-pal.com websubmission.tusa.client.id-pal.com tusa.client.id-pal.com
+  ```
 
 **Install Ubuntu packages**
 
-- Run below mentioned commands on your Ubuntu terminal
+* Run the following commands in your Ubuntu terminal:
 
-    ```
-    sudo apt-get install make keychain unzip
-    ```
+  ```bash
+  sudo apt-get install make keychain unzip
+  ```
 
-**Install aws-cli**
+**Install AWS CLI**
 
-- un below mentioned commands on your Ubuntu terminal
+* Run the following commands in your Ubuntu terminal:
 
-    ```
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    unzip awscliv2.zip
-    sudo ./aws/install
-    ```
+  ```bash
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  unzip awscliv2.zip
+  sudo ./aws/install
+  ```
 
-**Configure MFA alias for you bash shell.**
+**Configure MFA alias for your bash shell**
 
-- [https://id-pal.monday.com/boards/1735082033/pulses/1738828441](https://id-pal.monday.com/boards/1735082033/pulses/1738828441)
+* Follow this guide:
+  [https://id-pal.monday.com/boards/1735082033/pulses/1738828441](https://id-pal.monday.com/boards/1735082033/pulses/1738828441)
 
-    ```
-    mfa <aws_mfa_code_here>
-    ```
+  ```
+  mfa <aws_mfa_code_here>
+  ```
 
 **Create Projects Folder**
 
-- Create the project folder in your filesystem based on the operating system.
+* Create the project folder in your filesystem based on your operating system.
 
-    Windows:
+  Windows:
 
-    ```
-    mkdir /mnt/c/Users/<you>/ID-Pal/
-    ```
+  ```bash
+  mkdir /mnt/c/Users/<you>/ID-Pal/
+  ```
 
-    MacOS:
+  macOS:
 
-    ```
-    mkdir /Users/<username>/<projects_here>/<project_folder>
-    ```
+  ```bash
+  mkdir /Users/<username>/<projects_here>/<project_folder>
+  ```
 
-**Creating and Adding Github key**
+**Creating and Adding GitHub Key**
 
-- For detailed instruction and clarification refer the below link
+* Run the following command to generate a new SSH key:
 
-    ```
-    https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
-    ```
+  ```bash
+  ssh-keygen -t ed25519 -C "your_email@example.com"
+  ```
 
-- Run the below command to generate a new SSH key
+* It will ask for a passphrase. Enter it for security.
 
-    ```bash
-    ssh-keygen -t ed25519 -C "your_email@example.com"
-    ```
+* By default, the key will be saved at `/home/<user>/.ssh/id_ed25519`. Leave it as is and press Enter.
 
-- This will ask for passphrase. Enter the passphrase for the security.
+* For the detailed instructions, refer to:
 
-- By default it will save the keys in the /home/<user>/.ssh/id_ed25519  path. Leave it as it is and press enter. Now the keys will be generated with the provided passphrase and save in the mentioned path.
-
+  ```
+  https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+  ```
 
 **Update the variables in user global file**
 
-- Add the below items in your .profile or .bashrc file found at "$HOME/bashrc"
+* Add the following items to your `.profile` or `.bashrc` file located at `$HOME/.bashrc`
 
-    For WSL only
+  *For WSL only:*
 
-    ```
-    export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
-    export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/Users/<you>/Documents/<project_ folder>/dev-box/"
-    ```
+  ```bash
+  export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"  export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/Users/<you>/ID-Pal/dev-box/"
+  ```
 
-    All Platforms
+  *For all platforms:*
 
-    ```
-    source ~/.aws/alias.sh
-    source ~/.aws/token_file
+  ```bash
+  source ~/.aws/alias.sh
+  source ~/.aws/token_file
 
-    export JUMPBOX_USER=your_jumpbox_name
-    export AWS_PRIVATE_SSH_KEY=~/.ssh/id_rsa
+  export JUMPBOX_USER=your_jumpbox_name
+  export AWS_PRIVATE_SSH_KEY=~/.ssh/id_rsa
 
-    export GITHUB_TOKEN=your_github_token
-    export GITHUB_ID=your_github_username
-    export GITHUB_PAT_TOKEN=your_github_fine_grained_pat
+  export GITHUB_TOKEN=your_github_token
+  export GITHUB_ID=your_github_username
+  export GITHUB_PAT_TOKEN=your_github_fine_grained_pat
 
-    export AWS_USERMFA_ARN=arn:aws:iam::649286310850:mfa/your_aws_username
+  export AWS_USERMFA_ARN=arn:aws:iam::649286310850:mfa/your_aws_username
 
-    # For Loading the SSH key
-    /usr/bin/keychain -q --nogui $HOME/.ssh/id_rsa
-    source $HOME/.keychain/$HOSTNAME-sh
+  # For loading the SSH key
+  /usr/bin/keychain -q --nogui $HOME/.ssh/id_rsa
+  source $HOME/.keychain/$HOSTNAME-sh
 
-    [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
-    complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-    ```
+  [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+  complete -W "`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'`" make
+  ```
 
-- After updating the variables source the profile file to load the new variables into your bash session
+* After updating, run the following to apply changes:
 
-    ```
-    source ~/.bashrc
-    ```
+  ```bash
+  source ~/.bashrc
+  ```
 
-**Update the git credentials**
+**Update the Git credentials**
 
-- Run the below command to add the github authentication in the Ubuntu
+* Run the following commands to configure Git in Ubuntu:
 
-    ```
-    git config --global user.name "<your github username>"
-    git config --global user.email "<your github email>"
-    git config --global credential.helper '!f() { echo username=$GITHUB_ID; echo "password=$GITHUB_PAT_TOKEN"; };f'
-    ```
+  ```bash
+  git config --global user.name "<your github username>"
+  git config --global user.email "<your github email>"
+  git config --global credential.helper '!f() { echo username=$GITHUB_ID; echo "password=$GITHUB_PAT_TOKEN"; };f'
+  ```
 
 **Cloning the Repo**
-
-```
-cd /mnt/c/Users/<you>/ID-Pal/ (the path where you created your project folder)
-```
-
-- clone the repo within the project folder you created earlier
-
+* Go to the dev-box path
+    ```bash
+    cd /mnt/c/Users/<you>/ID-Pal/
     ```
-    git clone https://github.com/ID-Pal/dev-box.git 
-    cd dev-box/
-    ```
+
+* Clone the repo within the project folder you created earlier:
+
+  ```bash
+  git clone https://github.com/ID-Pal/dev-box.git 
+  cd dev-box/
+  ```
+
 
 **Build a virtual machine from scratch**
 
-- Authenticate with AWS CLI using MFA code
+* Authenticate with AWS CLI using MFA code:
 
-    ```
-    mfa <aws_mfa_code_here>
-    ```
+  ```bash
+  mfa <aws_mfa_code_here>
+  ```
 
-- Test if the MFA authentication provided you access to the AWS
+* Test if the MFA authentication provides access to AWS:
 
-    ```
-    make test-aws-cli
-    ```
+  ```bash
+  make test-aws-cli
+  ```
 
-- Run the below command to build the VM
+* Run the following command to build the VM:
 
-    ```
-    make build
-    ```
+  ```bash
+  make build
+  ```
 
-- This will take some amount of time to build(Approximately 30 to 45 minutes).
+* This process takes approximately 30 to 45 minutes.
 
-- This command process the below steps
+* The command performs the following:
 
-    - VM in the virtual box
-    - Install the packages and dependencies to run the application and Docker container
-    - Clone the necessary ID-Pal private repositories
-    - Pull the php8, mysql images and create the container from those images
+  * Creates a VM in VirtualBox
+  * Installs packages and dependencies to run the application and Docker containers
+  * Clones the necessary ID-Pal private repositories
+  * Pulls the PHP 8 and MySQL images and creates containers from them
 
-- Check the logs thoroughly if there are any errors occurred during the build. Due to network interruption or manual interruption build might be failed.
+* Check the build logs thoroughly for any errors. The build may fail due to network issues or manual interruption.
 
-- After the build is completed you can able to access the new VM
+* Once the build is complete, you will have access to the new VM.
 
 **Getting access to the virtual machine**
 
-- create a SSH session from WSL
+* Create an SSH session from WSL:
 
-    ```
-    make ssh
-    ```
+  ```bash
+  make ssh
+  ```
 
 **Validation**
 
-1. Check if  all the containers are in "healthy” state
-    - To check the running container
-    
-        ```bash
-        make show-containers
-        ```
-    
-    - Check the php container logs using the below command
-    
-        ```bash
-        make logs SERVICE=php8
-        ```
-    
-2. The local site "tusa.client.id-pal.com" can be accessed in the browser
+1. Check if all containers are in a "healthy" state.
 
-**Troubleshooting Dev-Box**
+   * To check running containers:
 
-- If the dev-box fails at make ansible-run step, please follow below mentioned seps
-- SSH into the devbox
+     ```bash
+     make show-containers
+     ```
 
-    ```bash
-    make ssh
-    ```
+   * Check the PHP container logs:
 
-- If above command is successful then exit the VM and run the below command from the dev-box repo
+     ```bash
+     make logs SERVICE=php8
+     ```
 
-    ```bash
-    make ansible-run
-    ```
+2. The local site `tusa.client.id-pal.com` should be accessible in your browser.
 
-- The PHP logs can be found using make `logs-8` inside the projects/php8 folder
-- Delete laravel_session cookies (there may be two) before logging into Web Portal to avoid a CSRF Mismatch exception
-- Please find the link to edit code in Visual Studio 
-    ```
-    https://idpal-my.sharepoint.com/:w:/g/personal/chayan_singh_id-pal_com/ESNbp1Vp8KFOmw4YIamcVh0BnW_OwqtLIenIbHeEepl35g?e=pesnxo
-    ```
+**Troubleshooting Dev-Box build issues**
+
+* If the dev-box fails at the `make ansible-run` step, follow these steps:
+
+* SSH into the dev-box:
+
+  ```bash
+  make ssh
+  ```
+
+* If successful, exit the VM and run this from the dev-box repo:
+
+  ```bash
+  make ansible-run
+  ```
+
+* PHP logs can be found by running `make logs-8` inside the `projects/php8` folder.
+
+* Delete the `laravel_session` cookies (there may be two) before logging into the Web Portal to avoid CSRF Mismatch exceptions.
+
+* To edit code in Visual Studio, use this link:
+
+  ```
+  https://idpal-my.sharepoint.com/:w:/g/personal/chayan_singh_id-pal_com/ESNbp1Vp8KFOmw4YIamcVh0BnW_OwqtLIenIbHeEepl35g?e=pesnxo
+  ```
 
 **PHPUnit**
 
-- If phpunit is not installed during build process, `ssh` into container and install it with this command:
+* If PHPUnit is not installed during the build process, SSH into the container and install it:
 
-    ```
-    $ composer require phpunit/phpunit 6.0.8 --dev
-    ```
+  ```bash
+  composer require phpunit/phpunit 6.0.8 --dev
+  ```
 
 **Increasing RAM for the Composer command**
 
-- If it fails due to insufficient memory, you need to increase PHP's `memory_limit` setting in `php.ini` to `-1`, which means unlimited. You can find out where is the loaded configuration file:
+* If it fails due to insufficient memory, increase PHP’s `memory_limit` setting in `php.ini` to `-1` (unlimited).
 
-    ```
-    $php -i
-    ```
+* To find the loaded config file:
 
-- There is no `php.ini` in the container, but the closest one is: `/usr/local/etc/php/conf.d/local.ini`. Set `memory_limit=-1` and restart the `ssh` session. That should provide more memory, up to 3GB as enabled for DevBox. If you need even more RAM, change DevBox's setting in `Vagrantfile` to intended value of megabytes (default is 3072). Restart the DevBox and check if it runs with the new amount of RAM:
+  ```bash
+  php -i
+  ```
 
-    ```
-    $ free -h
-    ```
+* The closest file is `/usr/local/etc/php/conf.d/local.ini`. Set `memory_limit=-1` there and restart the SSH session.
 
-- After the phpunit is installed, make sure to revert both PHP `memory_limit` and the DevBox's RAM.
+* This allows up to 3GB of memory. To increase it further, edit the `Vagrantfile` and set the desired RAM (default: 3072 MB).
 
-**version issue**
+* Restart the DevBox and confirm the new RAM:
+
+  ```bash
+  free -h
+  ```
+
+* After installation, revert both the PHP `memory_limit` and DevBox RAM settings.
+
+**Version issue**
 
 ***Error***
+
 ```
-The provider 'virtualbox' that was requested to back the machine'default' is reporting that it isn't usable on this system. The reason is shown below:Vagrant has detected that you have a version of VirtualBox installed that is not supported by this version of Vagrant. Please install one of the supported versions listed below to use Vagrant:4.0, 4.1, 4.2, 4.3, 5.0, 5.1, 5.2, 6.0, 6.1, 7.0. A Vagrant update may also be available that adds support for the version you specified. Please check [www.vagrantup.com/downloads.html](http://www.vagrantup.com/downloads.html) to download the latest version. make: *** [Makefile:75: stop] Error 1
+The provider 'virtualbox' that was requested to back the machine 'default' is reporting that it isn't usable on this system. The reason is shown below:
+Vagrant has detected that you have a version of VirtualBox installed that is not supported by this version of Vagrant. Please install one of the supported versions listed below to use Vagrant:
+4.0, 4.1, 4.2, 4.3, 5.0, 5.1, 5.2, 6.0, 6.1, 7.0.
+A Vagrant update may also be available that adds support for the version you specified. Please check www.vagrantup.com/downloads.html to download the latest version.
+make: *** [Makefile:75: stop] Error 1
 ```
-    
-    ![](https://github.com/ID-Pal/dev-box/raw/main/structure/vscode_readme_files/Vagrant-Error.png)
-    
+
+![](https://github.com/ID-Pal/dev-box/raw/main/structure/vscode_readme_files/Vagrant-Error.png)
 
 **Solution**
 
-- We need validate the existing `vagrant version` and `virtual box version` in the local machine. Command to validate the Vagrant Version.
+* Validate the existing Vagrant and VirtualBox versions on your machine.
 
-    ```
-    $ cd /mnt/c/Users/<User>/ID-Pal/dev-box
-    ```
+  ```bash
+  cd /mnt/c/Users/<User>/ID-Pal/dev-box
+  vagrant --version
+  ```
 
-    ```
-    $ vagrant --version
-    ```
+* If the Vagrant version is not compatible, install a specific version:
 
-- If vagrant version is not compatible, We need to upgrade the vagrant to a specific version that is compatible using the below command.
+  ```bash
+  sudo apt install vagrant=<version>
+  # Example:
+  sudo apt install vagrant=2.4.3-1
+  ```
 
-    ```
-    $  sudo apt install vagrant=<version>
-    (eg)
-    $ sudo apt install vagrant=2.4.3-1
-    ```
+* Remove the existing VM:
 
-- Execute the below command to remove the existing VM
+  ```bash
+  make rm
+  ```
 
-    ```bash
-    $ make rm
-    ```
+* Rebuild the dev-box:
 
-- Re-build the dev-box setup by running
+  ```bash
+  make build
+  ```
 
-    ```
-    $ make build
-    ```
+* If you're using Vagrant version 2.4.3 or above, upgrade VirtualBox to version 7.1.4.
 
-- If you're using Vagrant version `2.4.3` and above, you need to upgrade VirtualBox to version `7.1.4` for compatibility.
-    
-    ![](https://github.com/ID-Pal/dev-box/raw/main/structure/vscode_readme_files/Oracle-VirtualBox.png)
+![](https://github.com/ID-Pal/dev-box/raw/main/structure/vscode_readme_files/Oracle-VirtualBox.png)
 
 ***Error***
-```   
-Stderr: VBoxManage.exe: error: Raw-mode is unavailable courtesy of Hyper-V. (VERR_SUPDRV_NO_RAW_MODE_HYPER_V_ROOT). VBoxManage.exe: error: Details: code VBOX_E_VM_ERROR (0x80bb0003), component ConsoleWrap, interface IConsole.VBoxManage.exe: error: Context: "LaunchVMProcess(a->session, machine->GetId(), env, externalStartup)" at line 834 of file VBoxManageMisc.cpp
-```
-    
-    ![](https://github.com/ID-Pal/dev-box/raw/main/structure/vscode_readme_files/Virtual-Box-stderr.png)
-    
 
-**Solution** 
-- Uninstall VirtualBox, then reinstall it. After the installation is complete, make sure to reboot your machine.
+```
+Stderr: VBoxManage.exe: error: Raw-mode is unavailable courtesy of Hyper-V. (VERR_SUPDRV_NO_RAW_MODE_HYPER_V_ROOT).
+VBoxManage.exe: error: Details: code VBOX_E_VM_ERROR (0x80bb0003), component ConsoleWrap, interface IConsole.
+VBoxManage.exe: error: Context: "LaunchVMProcess(a->session, machine->GetId(), env, externalStartup)" at line 834 of file VBoxManageMisc.cpp
+```
+
+![](https://github.com/ID-Pal/dev-box/raw/main/structure/vscode_readme_files/Virtual-Box-stderr.png)
+
+**Solution**
+
+* Uninstall VirtualBox, reinstall it, and reboot your machine.
