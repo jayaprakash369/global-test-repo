@@ -1,11 +1,10 @@
-
 # **Steps for configuring a new local dev-box environment**
 
 ## System Requirements
 
 1. Operating System - Windows 11 22H2 | macOS
 2. VirtualBox 7.1.4 (It should be a fresh installation. If it already exists, uninstall it completely and install a fresh copy.)
-3. Vagrant 2.4.5+
+3. Vagrant 2.4.6
 4. AWS CLI (latest version)
 5. GitHub Personal Access Token (PAT - fine-grained token)
 
@@ -13,10 +12,12 @@
 
 * To create a new PAT token, follow the steps provided here:
 
-  ```bash
+  ```
   https://id-pal.monday.com/boards/1735082033/pulses/5797018445
   ```
 * After you creating the PAT token, it will not authenticate. ID-Pal team has to approve the token. Once you created the token contact the relevent authorized person to approve the token
+
+* For the contract developers, they may not have access to view the runbook provided above. If you dont have access, contact the relevant authorized person to get the access.
 
 ## Install WSL and Ubuntu
 
@@ -98,16 +99,16 @@
 * Download and install VirtualBox 7.1.4 using the links below:
 
   Reference Link: [https://download.virtualbox.org/virtualbox/7.1.4/](https://download.virtualbox.org/virtualbox/7.1.4/)
- 
+
   Direct Download: [https://download.virtualbox.org/virtualbox/7.1.4/VirtualBox-7.1.4-165100-Win.exe](https://download.virtualbox.org/virtualbox/7.1.4/VirtualBox-7.1.4-165100-Win.exe)
 
 * Download the Vagrant's latest version by running the following commands in the Ubuntu terminal:
 
-  ```bash
+  ```
   wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
   echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-  sudo apt update 
-  sudo apt install vagrant=2.4.7-1 -y
+  sudo apt update
+  sudo apt install vagrant=2.4.6-1 -y
   vagrant --version
   vagrant plugin install vagrant-scp
   vagrant plugin install vagrant-disksize
@@ -119,7 +120,7 @@
 
 * For macOS: Open the default terminal and open the file using:
 
-  ```bash
+  ```
   nano /etc/hosts
   ```
 
@@ -135,7 +136,7 @@
 
 * Run the following commands in your Ubuntu terminal:
 
-  ```bash
+  ```
   sudo apt-get install make keychain unzip -y
   ```
 
@@ -143,7 +144,7 @@
 
 * Run the following commands in your Ubuntu terminal:
 
-  ```bash
+  ```
   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
   unzip awscliv2.zip
   sudo ./aws/install
@@ -164,13 +165,13 @@
 
   Windows:
 
-  ```bash
+  ```
   mkdir /mnt/c/Users/<you>/ID-Pal/
   ```
 
   macOS:
 
-  ```bash
+  ```
   mkdir /Users/<username>/<projects_here>/<project_folder>
   ```
 
@@ -178,7 +179,7 @@
 
 * Run the following command to generate a new SSH key:
 
-  ```bash
+  ```
   ssh-keygen -t ed25519 -C "your_email@example.com"
   ```
 
@@ -198,23 +199,23 @@
 
 ### Update the variables in user global file
 
-* Add the following items to your `.profile` or `.bashrc` file located at `$HOME/.bashrc`
+* Add the following items to your `.profile` or `.bashrc` file which located at `$HOME` path
 
-  *For WSL only:*
+  *For Windows WSL only add below content:*
 
-  ```bash
+  ```
   export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
   export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/Users/<you>/ID-Pal/dev-box/"
   ```
 
-  *For all platforms:*
+  *For all platforms MAC and Windows add the below content:*
 
-  ```bash
+  ```
   source ~/.aws/alias.sh
   source ~/.aws/token_file
 
   export JUMPBOX_USER=your_jumpbox_name
-  export AWS_PRIVATE_SSH_KEY=~/.ssh/id_rsa
+  export AWS_PRIVATE_SSH_KEY=~/.ssh/id_ed25519
 
   export GITHUB_TOKEN=your_github_token
   export GITHUB_ID=your_github_username
@@ -223,16 +224,16 @@
   export AWS_USERMFA_ARN=arn:aws:iam::649286310850:mfa/your_aws_username
 
   # For loading the SSH key
-  /usr/bin/keychain -q --nogui $HOME/.ssh/id_rsa
+  /usr/bin/keychain -q --nogui $HOME/.ssh/id_ed25519
   source $HOME/.keychain/$HOSTNAME-sh
 
   [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
   complete -W "`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_.-]*$//'`" make
   ```
 
-* After updating, run the following to apply the variable changes:
+* After updating the file, run the following to apply the variable changes:
 
-  ```bash
+  ```
   source ~/.bashrc
   ```
 
@@ -240,7 +241,7 @@
 
 * Run the following commands to configure Git in Ubuntu:
 
-  ```bash
+  ```
   git config --global user.name "<your github username>"
   git config --global user.email "<your github email>"
   git config --global credential.helper '!f() { echo username=$GITHUB_ID; echo "password=$GITHUB_PAT_TOKEN"; };f'
@@ -248,35 +249,35 @@
 
 ### Cloning the Repo
 * Go to the dev-box path
-    ```bash
+    ```
     cd /mnt/c/Users/<you>/ID-Pal/
     ```
 
 * Clone the repo within the project folder you created earlier:
 
-  ```bash
-  git clone https://github.com/ID-Pal/dev-box.git 
+  ```
+  git clone https://github.com/ID-Pal/dev-box.git
   cd dev-box/
   ```
-**NOTE:** Make sure whenever you run the make commands, you should be in the dev-box (```/mnt/c/Users/<you>/ID-Pal/dev-box```) folder. Otherwise make commands won't work 
+**NOTE:** Make sure whenever you run the make commands, you should be in the dev-box (```/mnt/c/Users/<you>/ID-Pal/dev-box```) folder. Otherwise make commands won't work
 
 ### Build a virtual machine from scratch
 
 * Authenticate with AWS CLI using MFA code:
 
-  ```bash
+  ```
   mfa <aws_mfa_code_here>
   ```
 
 * Test if the MFA authentication provides access to AWS:
 
-  ```bash
+  ```
   make test-aws-cli
   ```
 
 * Run the following command to build the VM:
 
-  ```bash
+  ```
   make build
   ```
 
@@ -297,27 +298,70 @@
 
 * Create an SSH session from WSL:
 
-  ```bash
+  ```
   make ssh
   ```
 
-### Validation
+## Validation of the local site setup inside the VM
 
 1. Check if all containers are in a "healthy" state.
 
    * To check running containers:
 
-     ```bash
+     ```
      make show-containers
      ```
 
    * Check the PHP container logs:
 
-     ```bash
+     ```
      make logs SERVICE=php8
      ```
+   * Check if the migrations are completed from logs. It will take some time to migrate all the tables(approximately 30 min).
+   * If you find any valid errors in the logs, first fix them and go to the next step. Once the Laravel migration completed and seeder executed, validate the liquibase migration.
 
-2. The local site `https://tusa.client.id-pal.com` should be accessible in your browser.
+2. Validate the liquibase migration
+
+    * Validate if the liquibase migration is executed properly
+    * Go to the liquibase path
+
+        ```
+        cd /usr/local/liquibase/database-schema
+        git status
+        ```
+    * If any unwanted changes are present in the staging changes restore
+        ```
+        git restore .
+        ```
+    * If the branch is not in the master switch to master branch
+        ```
+        git checkout master
+        ```
+    * Pull the changes
+        ```
+        git pull
+        ```
+    * Modify the permission of the repo folder to avoid the permission issue
+
+        ```
+        find ./database-schema/ -type d -exec chmod 755 {} \;
+        find ./database-schema/ -type f -exec chmod 644 {} \;
+        ```
+    * Now check the liquibase migration state
+        ```
+        liquiabse status
+        ```
+    * If the state is showing as already upto date, It means liquibase migration executed at the VM build process. Otherwise we need to update it manually.
+    * Update the liquibase migration state
+        ```
+        liquiabse update
+        ```
+
+3. Don't try to load the site until the php container becomes healthy. Otherwise site will not be loaded. Duble check if the all the migrations are completed in application side and the liquibase.
+
+4. Once everything verified, the local site `https://tusa.client.id-pal.com` should be accessible in your browser.
+
+5. If you encounter any issues while loading the site, eventhought properly completing all the steps, contact ID-Pal developer team or DevOps team to troubleshoot further.
 
 ## Troubleshooting Dev-Box build issues
 
@@ -325,13 +369,13 @@
 
 * SSH into the dev-box:
 
-  ```bash
+  ```
   make ssh
   ```
 
 * If successful, exit the VM and run this from the dev-box repo:
 
-  ```bash
+  ```
   make ansible-run
   ```
 
@@ -349,7 +393,7 @@
 
 * If PHPUnit is not installed during the build process, SSH into the container and install it:
 
-  ```bash
+  ```
   composer require phpunit/phpunit 6.0.8 --dev
   ```
 
@@ -368,7 +412,7 @@
 
 * Restart the DevBox and confirm the new RAM:
 
-  ```bash
+  ```
   free -h
   ```
 
@@ -391,14 +435,14 @@ make: *** [Makefile:75: stop] Error 1
 
 * Validate the existing Vagrant and VirtualBox versions on your machine.
 
-  ```bash
+  ```
   cd /mnt/c/Users/<User>/ID-Pal/dev-box
   vagrant --version
   ```
 
 * If the Vagrant version is not compatible, install a specific version:
 
-  ```bash
+  ```
   sudo apt install vagrant=<version>
   # Example:
   sudo apt install vagrant=2.4.3-1
@@ -406,13 +450,13 @@ make: *** [Makefile:75: stop] Error 1
 
 * Remove the existing VM:
 
-  ```bash
+  ```
   make rm
   ```
 
 * Rebuild the dev-box:
 
-  ```bash
+  ```
   make build
   ```
 
@@ -432,3 +476,23 @@ VBoxManage.exe: error: Context: "LaunchVMProcess(a->session, machine->GetId(), e
 **Solution**
 
 * Uninstall VirtualBox, reinstall it, and reboot your machine.
+
+### SSH connection issues
+
+***possible causes***
+* First check if the ```config``` file is present on the ```~/.ssh``` folder. If not present copy and modify as provided below
+    ```
+    cp /mnt/c/Users/<you>/ID-Pal/dev-box/ssh_config.tmpl ~/.ssh/config
+    ```
+
+* Open the config file and update your user name on the below block
+    ```
+    #Jumpbox host records
+    Host eu-prod-jumpbox us-prod-jumpbox eu-nonprod-jumpbox us-nonprod-jumpbox
+    User <Your jumpbox username>
+    ForwardAgent yes
+    ```
+* If you do not know your jumpbox username contact DevOps team
+* Ensure you dont have pre-installed virtualbox that is not installed by you freshly. If you have any virtualbox previously, unintall completely and install again with fresh cofiguration. Otherwise pre-installed virtualbox will interfere with the ssh connection.
+
+***NOTE:*** If you get any other errors other than mentioned here, Please contact ID-Pal DevOps team or Developer team based on the error.
