@@ -358,7 +358,7 @@
 
 * To find the loaded config file:
 
-  ```bash
+  ```
   php -i
   ```
 
