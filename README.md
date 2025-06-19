@@ -1,7 +1,7 @@
 
-**Steps for configuring a new local dev-box environment**
+# **Steps for configuring a new local dev-box environment**
 
-**System Requirements**
+## System Requirements
 
 1. Operating System - Windows 11 22H2 | macOS
 2. VirtualBox 7.1.4 (It should be a fresh installation. If it already exists, uninstall it completely and install a fresh copy.)
@@ -9,7 +9,7 @@
 4. AWS CLI (latest version)
 5. GitHub Personal Access Token (PAT - fine-grained token)
 
-**Create the GitHub PAT token**
+## Create the GitHub PAT token
 
 * To create a new PAT token, follow the steps provided here:
 
@@ -18,7 +18,7 @@
   ```
 * After you creating the PAT token, it will not authenticate. ID-Pal team has to approve the token. Once you created the token contact the relevent authorized person to approve the token
 
-**Install WSL and Ubuntu**
+## Install WSL and Ubuntu
 
 * Follow the instructions to install the Windows Subsystem and update to WSL2.
 
@@ -61,7 +61,7 @@
   | ------------ | --------- | ----------- |
   | Ubuntu-22.04 | Running   | 1           |
 
-**Disabling Hyper-V**
+### Disabling Hyper-V
 
 * Hyper-V is a built-in Windows hypervisor. It must be disabled to allow VirtualBox to function as expected.
 
@@ -77,7 +77,7 @@
   bcdedit /set hypervisorlaunchtype off
   ```
 
-**Troubleshooting**
+### Troubleshooting
 
 * WSL Register Distribution Error 0x80370102 in Windows 10/11 (in case of WSL reinstallation):
 
@@ -85,7 +85,7 @@
   bcdedit /set hypervisorlaunchtype auto
   ```
 
-**Software Installation in WSL Ubuntu**
+## Software Installation in WSL Ubuntu
 
 * Search for "Ubuntu" in the Windows search bar. It will show the installed Ubuntu versions.
 
@@ -131,7 +131,7 @@
   192.168.56.15 mise.client.id-pal.com websubmission.mise.client.id-pal.com websubmission.tusa.client.id-pal.com tusa.client.id-pal.com
   ```
 
-**Install Ubuntu packages**
+### Install Ubuntu packages
 
 * Run the following commands in your Ubuntu terminal:
 
@@ -139,7 +139,7 @@
   sudo apt-get install make keychain unzip -y
   ```
 
-**Install AWS CLI**
+### Install AWS CLI
 
 * Run the following commands in your Ubuntu terminal:
 
@@ -149,7 +149,7 @@
   sudo ./aws/install
   ```
 
-**Configure MFA alias for your bash shell**
+### Configure MFA alias for your bash shell
 
 * Follow this guide:
   [https://id-pal.monday.com/boards/1735082033/pulses/1738828441](https://id-pal.monday.com/boards/1735082033/pulses/1738828441)
@@ -158,7 +158,7 @@
   mfa <aws_mfa_code_here>
   ```
 
-**Create Projects Folder**
+### Create Projects Folder
 
 * Create the project folder in your filesystem based on your operating system.
 
@@ -174,7 +174,7 @@
   mkdir /Users/<username>/<projects_here>/<project_folder>
   ```
 
-**Creating and Adding GitHub Key**
+## Creating and Adding GitHub Key
 
 * Run the following command to generate a new SSH key:
 
@@ -196,7 +196,7 @@
   https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
   ```
 
-**Update the variables in user global file**
+### Update the variables in user global file
 
 * Add the following items to your `.profile` or `.bashrc` file located at `$HOME/.bashrc`
 
@@ -235,7 +235,7 @@
   source ~/.bashrc
   ```
 
-**Update the Git credentials**
+### Update the Git credentials
 
 * Run the following commands to configure Git in Ubuntu:
 
@@ -245,7 +245,7 @@
   git config --global credential.helper '!f() { echo username=$GITHUB_ID; echo "password=$GITHUB_PAT_TOKEN"; };f'
   ```
 
-**Cloning the Repo**
+### Cloning the Repo
 * Go to the dev-box path
     ```bash
     cd /mnt/c/Users/<you>/ID-Pal/
@@ -257,9 +257,9 @@
   git clone https://github.com/ID-Pal/dev-box.git 
   cd dev-box/
   ```
+**NOTE:** Make sure whenever you run the make commands, you should be in the dev-box (```/mnt/c/Users/<you>/ID-Pal/dev-box```) folder. Otherwise make commands won't work 
 
-
-**Build a virtual machine from scratch**
+### Build a virtual machine from scratch
 
 * Authenticate with AWS CLI using MFA code:
 
@@ -292,7 +292,7 @@
 
 * Once the build is complete, you will have access to the new VM.
 
-**Getting access to the virtual machine**
+### Getting access to the virtual machine
 
 * Create an SSH session from WSL:
 
@@ -300,7 +300,7 @@
   make ssh
   ```
 
-**Validation**
+### Validation
 
 1. Check if all containers are in a "healthy" state.
 
@@ -318,7 +318,7 @@
 
 2. The local site `https://tusa.client.id-pal.com` should be accessible in your browser.
 
-**Troubleshooting Dev-Box build issues**
+## Troubleshooting Dev-Box build issues
 
 * If the dev-box fails at the `make ansible-run` step, follow these steps:
 
@@ -344,7 +344,7 @@
   https://idpal-my.sharepoint.com/:w:/g/personal/chayan_singh_id-pal_com/ESNbp1Vp8KFOmw4YIamcVh0BnW_OwqtLIenIbHeEepl35g?e=pesnxo
   ```
 
-**PHPUnit**
+### PHPUnit
 
 * If PHPUnit is not installed during the build process, SSH into the container and install it:
 
@@ -352,8 +352,7 @@
   composer require phpunit/phpunit 6.0.8 --dev
   ```
 
-**Increasing RAM for the Composer command**
-
+### Increasing RAM for the Composer command
 * If it fails due to insufficient memory, increase PHP’s `memory_limit` setting in `php.ini` to `-1` (unlimited).
 
 * To find the loaded config file:
@@ -374,7 +373,7 @@
 
 * After installation, revert both the PHP `memory_limit` and DevBox RAM settings.
 
-**Troubleshooting the version issues**
+### Troubleshooting the version issues
 
 ***Error***
 
