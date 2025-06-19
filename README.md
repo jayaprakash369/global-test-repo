@@ -16,6 +16,7 @@
   ```bash
   https://id-pal.monday.com/boards/1735082033/pulses/5797018445
   ```
+* After you creating the PAT token, it will not authenticate. ID-Pal team has to approve the token. Once you created the token contact the relevent authorized person to approve the token
 
 **Install WSL and Ubuntu**
 
@@ -373,7 +374,7 @@
 
 * After installation, revert both the PHP `memory_limit` and DevBox RAM settings.
 
-**Version issue**
+**Troubleshooting the version issues**
 
 ***Error***
 
@@ -386,7 +387,6 @@ make: *** [Makefile:75: stop] Error 1
 ```
 
 ![](https://github.com/ID-Pal/dev-box/raw/main/structure/vscode_readme_files/Vagrant-Error.png)
-
 **Solution**
 
 * Validate the existing Vagrant and VirtualBox versions on your machine.
@@ -429,7 +429,6 @@ VBoxManage.exe: error: Context: "LaunchVMProcess(a->session, machine->GetId(), e
 ```
 
 ![](https://github.com/ID-Pal/dev-box/raw/main/structure/vscode_readme_files/Virtual-Box-stderr.png)
-
 **Solution**
 
 * Uninstall VirtualBox, reinstall it, and reboot your machine.
